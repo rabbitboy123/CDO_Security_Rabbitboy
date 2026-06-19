@@ -8,4 +8,4 @@ id,full_name,email,phone,credit_card_number,ssn,date_of_birth,address
 7,Michael Anthony Davis,michael.davis@example.com,+1-555-012-3456,4024007148673576,700-89-0123,1975-06-14,147 Maple Drive Suite 500 Denver CO 80201
 8,Sarah Kim Wilson,sarah.wilson@example.com,+1-555-234-5678,5425233430109903,801-34-5678,1993-04-02,258 Walnut Street Unit 9C Boston MA 02101
 9,James Patrick Taylor,james.taylor@example.com,+1-555-345-6789,4716108999716531,900-78-9012,1980-08-19,369 Spruce Avenue Apt 15 San Francisco CA 94101
-10,Lisa Marie Anderson,lisa.anderson@example.com,+1-555-456-0123,4532015112830366,123-45-6789,1997-02-28,480 Chestnut Place Floor 2 Atlanta GA 30301
+11,New Person,new.person@example.com,+1-555-111-2222,4111222233334444,987-65-4321,1992-10-10,999 New St

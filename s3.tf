@@ -32,7 +32,7 @@ resource "aws_s3_bucket_public_access_block" "block" {
 # Upload the dummy sensitive data CSV into the bucket
 resource "aws_s3_object" "dummy_data" {
   bucket = aws_s3_bucket.sensitive_data.id
-  key    = "dummy_sensitive_data.csv"
+  key    = "dummy_sensitive_data_v3.csv"
   source = "${path.module}/dummy_sensitive_data.csv"
   etag   = filemd5("${path.module}/dummy_sensitive_data.csv")
 

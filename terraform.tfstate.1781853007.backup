@@ -1,0 +1,558 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.3",
+  "serial": 25,
+  "lineage": "9864bad7-95df-490b-0b71-933109256cac",
+  "outputs": {
+    "eventbridge_rule_arn": {
+      "value": "arn:aws:events:us-east-1:454231081739:rule/macie-findings-rule",
+      "type": "string"
+    },
+    "macie_job_id": {
+      "value": "e28ebe63683b1b8af088702dfb99ccca",
+      "type": "string"
+    },
+    "s3_bucket_name": {
+      "value": "macie-sensitive-scan-a5xgn1",
+      "type": "string"
+    },
+    "sns_topic_arn": {
+      "value": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_caller_identity",
+      "name": "current",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "account_id": "454231081739",
+            "arn": "arn:aws:iam::454231081739:user/Rabbitboy_clone_Devops",
+            "id": "454231081739",
+            "user_id": "AIDAWTQSIIMF67TKKUJQO"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "sns_topic_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "2424664187",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AllowEventBridgePublish\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"SNS:Publish\",\n      \"Resource\": \"arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic\",\n      \"Principal\": {\n        \"Service\": \"events.amazonaws.com\"\n      }\n    }\n  ]\n}",
+            "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"AllowEventBridgePublish\",\"Effect\":\"Allow\",\"Action\":\"SNS:Publish\",\"Resource\":\"arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic\",\"Principal\":{\"Service\":\"events.amazonaws.com\"}}]}",
+            "override_json": null,
+            "override_policy_documents": null,
+            "policy_id": null,
+            "source_json": null,
+            "source_policy_documents": null,
+            "statement": [
+              {
+                "actions": [
+                  "SNS:Publish"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [
+                  {
+                    "identifiers": [
+                      "events.amazonaws.com"
+                    ],
+                    "type": "Service"
+                  }
+                ],
+                "resources": [
+                  "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic"
+                ],
+                "sid": "AllowEventBridgePublish"
+              }
+            ],
+            "version": "2012-10-17"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_cloudwatch_event_rule",
+      "name": "macie_rule",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:events:us-east-1:454231081739:rule/macie-findings-rule",
+            "description": "Capture Macie Finding events and forward to SNS for email alerts",
+            "event_bus_name": "default",
+            "event_pattern": "{\"detail-type\":[\"Macie Finding\"],\"source\":[\"aws.macie\"]}",
+            "force_destroy": false,
+            "id": "macie-findings-rule",
+            "is_enabled": true,
+            "name": "macie-findings-rule",
+            "name_prefix": "",
+            "role_arn": "",
+            "schedule_expression": "",
+            "state": "ENABLED",
+            "tags": {
+              "Project": "CDO-Security-Macie-Lab"
+            },
+            "tags_all": {
+              "Project": "CDO-Security-Macie-Lab"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_cloudwatch_event_target",
+      "name": "sns_target",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "appsync_target": [],
+            "arn": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic",
+            "batch_target": [],
+            "dead_letter_config": [],
+            "ecs_target": [],
+            "event_bus_name": "default",
+            "force_destroy": false,
+            "http_target": [],
+            "id": "macie-findings-rule-SendToSNS",
+            "input": "",
+            "input_path": "",
+            "input_transformer": [],
+            "kinesis_target": [],
+            "redshift_target": [],
+            "retry_policy": [],
+            "role_arn": "",
+            "rule": "macie-findings-rule",
+            "run_command_targets": [],
+            "sagemaker_pipeline_target": [],
+            "sqs_target": [],
+            "target_id": "SendToSNS"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "aws_cloudwatch_event_rule.macie_rule",
+            "aws_sns_topic.macie_alerts"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_macie2_account",
+      "name": "macie",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "created_at": "2026-06-19T06:41:43Z",
+            "finding_publishing_frequency": "FIFTEEN_MINUTES",
+            "id": "454231081739",
+            "service_role": "arn:aws:iam::454231081739:role/aws-service-role/macie.amazonaws.com/AWSServiceRoleForAmazonMacie",
+            "status": "ENABLED",
+            "updated_at": "2026-06-19T06:41:43Z"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_macie2_classification_job",
+      "name": "scan_job",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "created_at": "2026-06-19T06:52:47Z",
+            "custom_data_identifier_ids": [],
+            "description": "",
+            "id": "e28ebe63683b1b8af088702dfb99ccca",
+            "initial_run": false,
+            "job_arn": "arn:aws:macie2:us-east-1:454231081739:classification-job/e28ebe63683b1b8af088702dfb99ccca",
+            "job_id": "e28ebe63683b1b8af088702dfb99ccca",
+            "job_status": "RUNNING",
+            "job_type": "ONE_TIME",
+            "name": "macie-s3-sensitive-scan-job-a5xgn1",
+            "name_prefix": "",
+            "s3_job_definition": [
+              {
+                "bucket_criteria": [],
+                "bucket_definitions": [
+                  {
+                    "account_id": "454231081739",
+                    "buckets": [
+                      "macie-sensitive-scan-a5xgn1"
+                    ]
+                  }
+                ],
+                "scoping": [
+                  {
+                    "excludes": [],
+                    "includes": []
+                  }
+                ]
+              }
+            ],
+            "sampling_percentage": 100,
+            "schedule_frequency": [],
+            "tags": {
+              "Project": "CDO-Security-Macie-Lab"
+            },
+            "tags_all": {
+              "Project": "CDO-Security-Macie-Lab"
+            },
+            "timeouts": null,
+            "user_paused_details": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoyNDAwMDAwMDAwMDAsInVwZGF0ZSI6MjQwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "aws_macie2_account.macie",
+            "aws_s3_bucket.sensitive_data",
+            "aws_s3_bucket_public_access_block.block",
+            "aws_s3_object.dummy_data",
+            "data.aws_caller_identity.current",
+            "random_string.suffix"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "sensitive_data",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acceleration_status": "",
+            "acl": null,
+            "arn": "arn:aws:s3:::macie-sensitive-scan-a5xgn1",
+            "bucket": "macie-sensitive-scan-a5xgn1",
+            "bucket_domain_name": "macie-sensitive-scan-a5xgn1.s3.amazonaws.com",
+            "bucket_prefix": "",
+            "bucket_regional_domain_name": "macie-sensitive-scan-a5xgn1.s3.us-east-1.amazonaws.com",
+            "cors_rule": [],
+            "force_destroy": true,
+            "grant": [
+              {
+                "id": "480bcf3020b04032a64fae3dccf097c6d875ab39975f721fdc6628ecb06fe442",
+                "permissions": [
+                  "FULL_CONTROL"
+                ],
+                "type": "CanonicalUser",
+                "uri": ""
+              }
+            ],
+            "hosted_zone_id": "Z3AQBSTGFYJSTF",
+            "id": "macie-sensitive-scan-a5xgn1",
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "object_lock_enabled": false,
+            "policy": "",
+            "region": "us-east-1",
+            "replication_configuration": [],
+            "request_payer": "BucketOwner",
+            "server_side_encryption_configuration": [
+              {
+                "rule": [
+                  {
+                    "apply_server_side_encryption_by_default": [
+                      {
+                        "kms_master_key_id": "",
+                        "sse_algorithm": "AES256"
+                      }
+                    ],
+                    "bucket_key_enabled": false
+                  }
+                ]
+              }
+            ],
+            "tags": {
+              "Project": "CDO-Security-Macie-Lab"
+            },
+            "tags_all": {
+              "Project": "CDO-Security-Macie-Lab"
+            },
+            "timeouts": null,
+            "versioning": [
+              {
+                "enabled": false,
+                "mfa_delete": false
+              }
+            ],
+            "website": [],
+            "website_domain": null,
+            "website_endpoint": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "random_string.suffix"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "block",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "block_public_acls": true,
+            "block_public_policy": true,
+            "bucket": "macie-sensitive-scan-a5xgn1",
+            "id": "macie-sensitive-scan-a5xgn1",
+            "ignore_public_acls": true,
+            "restrict_public_buckets": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_s3_bucket.sensitive_data",
+            "random_string.suffix"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_object",
+      "name": "dummy_data",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acl": null,
+            "arn": "arn:aws:s3:::macie-sensitive-scan-a5xgn1/dummy_sensitive_data.csv",
+            "bucket": "macie-sensitive-scan-a5xgn1",
+            "bucket_key_enabled": false,
+            "cache_control": "",
+            "checksum_algorithm": null,
+            "checksum_crc32": "",
+            "checksum_crc32c": "",
+            "checksum_crc64nvme": "",
+            "checksum_sha1": "",
+            "checksum_sha256": "",
+            "content": null,
+            "content_base64": null,
+            "content_disposition": "",
+            "content_encoding": "",
+            "content_language": "",
+            "content_type": "application/octet-stream",
+            "etag": "22109b95cdd2cdabafb58bfd70945330",
+            "force_destroy": false,
+            "id": "dummy_sensitive_data.csv",
+            "key": "dummy_sensitive_data.csv",
+            "kms_key_id": null,
+            "metadata": {},
+            "object_lock_legal_hold_status": "",
+            "object_lock_mode": "",
+            "object_lock_retain_until_date": "",
+            "override_provider": [],
+            "server_side_encryption": "AES256",
+            "source": "./dummy_sensitive_data.csv",
+            "source_hash": null,
+            "storage_class": "STANDARD",
+            "tags": {},
+            "tags_all": {},
+            "version_id": "",
+            "website_redirect": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_s3_bucket.sensitive_data",
+            "aws_s3_bucket_public_access_block.block",
+            "random_string.suffix"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_sns_topic",
+      "name": "macie_alerts",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "application_failure_feedback_role_arn": "",
+            "application_success_feedback_role_arn": "",
+            "application_success_feedback_sample_rate": 0,
+            "archive_policy": "",
+            "arn": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic",
+            "beginning_archive_time": "",
+            "content_based_deduplication": false,
+            "delivery_policy": "",
+            "display_name": "",
+            "fifo_throughput_scope": "",
+            "fifo_topic": false,
+            "firehose_failure_feedback_role_arn": "",
+            "firehose_success_feedback_role_arn": "",
+            "firehose_success_feedback_sample_rate": 0,
+            "http_failure_feedback_role_arn": "",
+            "http_success_feedback_role_arn": "",
+            "http_success_feedback_sample_rate": 0,
+            "id": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic",
+            "kms_master_key_id": "",
+            "lambda_failure_feedback_role_arn": "",
+            "lambda_success_feedback_role_arn": "",
+            "lambda_success_feedback_sample_rate": 0,
+            "name": "macie-findings-alerts-topic",
+            "name_prefix": "",
+            "owner": "454231081739",
+            "policy": "{\"Statement\":[{\"Action\":\"SNS:Publish\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Resource\":\"arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic\",\"Sid\":\"AllowEventBridgePublish\"}],\"Version\":\"2012-10-17\"}",
+            "signature_version": 0,
+            "sqs_failure_feedback_role_arn": "",
+            "sqs_success_feedback_role_arn": "",
+            "sqs_success_feedback_sample_rate": 0,
+            "tags": {
+              "Project": "CDO-Security-Macie-Lab"
+            },
+            "tags_all": {
+              "Project": "CDO-Security-Macie-Lab"
+            },
+            "tracing_config": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_sns_topic_policy",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic",
+            "id": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic",
+            "owner": "454231081739",
+            "policy": "{\"Statement\":[{\"Action\":\"SNS:Publish\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Resource\":\"arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic\",\"Sid\":\"AllowEventBridgePublish\"}],\"Version\":\"2012-10-17\"}"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_sns_topic.macie_alerts",
+            "data.aws_iam_policy_document.sns_topic_policy"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_sns_topic_subscription",
+      "name": "email_sub",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic:3262ff8c-5cad-4e56-8179-90a79a321c6c",
+            "confirmation_timeout_in_minutes": 1,
+            "confirmation_was_authenticated": false,
+            "delivery_policy": "",
+            "endpoint": "huyta152@gmail.com",
+            "endpoint_auto_confirms": false,
+            "filter_policy": "",
+            "filter_policy_scope": "",
+            "id": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic:3262ff8c-5cad-4e56-8179-90a79a321c6c",
+            "owner_id": "454231081739",
+            "pending_confirmation": false,
+            "protocol": "email",
+            "raw_message_delivery": false,
+            "redrive_policy": "",
+            "replay_policy": "",
+            "subscription_role_arn": "",
+            "topic_arn": "arn:aws:sns:us-east-1:454231081739:macie-findings-alerts-topic"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_sns_topic.macie_alerts"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "random_string",
+      "name": "suffix",
+      "provider": "provider[\"registry.terraform.io/hashicorp/random\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "a5xgn1",
+            "keepers": null,
+            "length": 6,
+            "lower": true,
+            "min_lower": 0,
+            "min_numeric": 0,
+            "min_special": 0,
+            "min_upper": 0,
+            "number": true,
+            "numeric": true,
+            "override_special": null,
+            "result": "a5xgn1",
+            "special": false,
+            "upper": false
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

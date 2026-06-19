@@ -15,7 +15,7 @@ data "aws_caller_identity" "current" {}
 # The job starts automatically as soon as it is created.
 # -----------------------------------------------------------
 resource "aws_macie2_classification_job" "scan_job" {
-  name     = "macie-s3-sensitive-scan-job-${random_string.suffix.result}"
+  name     = "macie-scan-job-v3-${random_string.suffix.result}"
   job_type = "ONE_TIME"
 
   s3_job_definition {
